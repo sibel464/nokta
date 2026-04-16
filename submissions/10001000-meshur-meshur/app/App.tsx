@@ -134,20 +134,37 @@ export default function App() {
         <ScrollView style={styles.artifactCore}>
           <View style={styles.artifactHeader}>
             <Text style={styles.artifactTitle}>GOLDEN SPEC ARTIFACT</Text>
-            <Text style={styles.artifactMeta}>SLOP RATIO: 0.02% | QUALITY: ENTERPRISE-GRADE</Text>
+            <Text style={styles.artifactMeta}>SLOP RATIO: 0.00% | STATUS: READY FOR AI AGENTS</Text>
           </View>
 
           <View style={styles.artifactSection}>
-            <Text style={styles.artifactSecLabel}>[01] THE SEED</Text>
-            <Text style={styles.artifactValue}>{ideaDot}</Text>
+            <Text style={styles.artifactSecLabel}>[1] EXECUTIVE SUMMARY</Text>
+            <Text style={styles.artifactValue}>
+              A highly targeted product aimed at {answers.user || 'specified users'}, addressing the critical friction of {answers.problem || 'their problem'}. 
+              The core thesis builds upon: "{ideaDot}".
+            </Text>
           </View>
 
-          {probes.map((probe, i) => (
-            <View key={probe.id} style={styles.artifactSection}>
-              <Text style={styles.artifactSecLabel}>[0{i + 2}] {probe.label}</Text>
-              <Text style={styles.artifactValue}>{answers[probe.id]}</Text>
-            </View>
-          ))}
+          <View style={styles.artifactSection}>
+            <Text style={styles.artifactSecLabel}>[2] HOW TO CREATE (EXECUTION PLAN)</Text>
+            <Text style={styles.artifactValue}>
+              PHASE 1: Stick strictly to the MVP boundaries. Do NOT build: {answers.scope || 'unnecessary features'}.{'\n\n'}
+              PHASE 2: Adopt infrastructure that respects the hard constraints: {answers.constraint || 'system limits'}. Ensure compliance from day zero.
+            </Text>
+          </View>
+
+          <View style={styles.artifactSection}>
+            <Text style={styles.artifactSecLabel}>[3] COPY-PASTE AI PROMPTS</Text>
+            <Text style={styles.artifactPrompt}>
+              // PROMPT FOR CURSOR / CLAUDE CODE:{'\n'}
+              "Initialize an Expo React Native application targeting {answers.user || 'users'} experiencing {answers.problem || 'issues'}. The app must STRICTLY exclude {answers.scope || 'these features'}. Keep the architecture within these constraints: {answers.constraint || 'none'}. Output the boilerplate app.json and package.json first."
+            </Text>
+            <View style={{height: 15}} />
+            <Text style={styles.artifactPrompt}>
+              // PROMPT TO ENHANCE FEATURE SET:{'\n'}
+              "Acting as a Senior Product Manager, review this MVP spec. Suggest exactly two high-leverage gamification mechanics that require zero backend changes, keeping {answers.constraint || 'limits'} in mind."
+            </Text>
+          </View>
 
           <TouchableOpacity style={styles.btnOutline} onPress={restartProcess}>
             <Text style={styles.btnOutlineText}>COMMENCE NEW CYCLE</Text>
@@ -193,5 +210,6 @@ const styles = StyleSheet.create({
   artifactMeta: { color: '#00E5FF', fontSize: 10, fontWeight: 'bold', letterSpacing: 1, marginTop: 5 },
   artifactSection: { backgroundColor: '#111116', padding: 20, borderRadius: 8, marginBottom: 15, borderWidth: 1, borderColor: '#22222C' },
   artifactSecLabel: { color: '#FF5722', fontSize: 11, fontWeight: '900', letterSpacing: 1, marginBottom: 8 },
-  artifactValue: { color: '#E0E0E5', fontSize: 15, lineHeight: 24, fontWeight: '500' }
+  artifactValue: { color: '#E0E0E5', fontSize: 15, lineHeight: 24, fontWeight: '500' },
+  artifactPrompt: { color: '#00E5FF', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace', fontSize: 13, lineHeight: 20, backgroundColor: '#09090D', padding: 15, borderRadius: 5, overflow: 'hidden' }
 });
