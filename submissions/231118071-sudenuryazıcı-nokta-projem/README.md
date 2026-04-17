@@ -6,10 +6,11 @@ Bu proje, Nokta Solo Seferi (Misyon Süresi: 2 Saat) kapsamında geliştirilmiş
 
 ---
 
-## 📱 Expo QR / Build
+## 📱 Expo QR
 > [!NOTE]
-> Proje canlı build linki aşağıdadır:
-> [Nokta Capture - Expo Build](https://expo.dev/accounts/sudey/projects/nokta-v1-sudey/builds/89622f23-bd3b-4859-8755-c05ca0785f80)
+> Proje canlı build sürümüne aşağıdaki QR kodu okutarak ulaşabilirsiniz:
+>
+> ![Expo QR Code](./expo-qr.png)
 
 ---
 
@@ -21,9 +22,9 @@ Bu proje, Nokta Solo Seferi (Misyon Süresi: 2 Saat) kapsamında geliştirilmiş
 
 ## 📦 APK
 > [!TIP]
-> `app-release.apk` dosyası bu klasörün kök dizinine eklenmiştir. Doğrudan telefona kurularak test edilebilir.
-Linki:
-https://expo.dev/accounts/sudey/projects/nokta-v1-sudey/builds/89622f23-bd3b-4859-8755-c05ca0785f80
+> **app-release.apk** dosyası bu klasörün kök dizinine eklenmiştir. 
+> 
+> *Not: Build sayfasına [buradan](https://expo.dev/accounts/sudey/projects/nokta-v1-sudey/builds/89622f23-bd3b-4859-8755-c05ca0785f80) da ulaşılabilir.*
 
 ---
 
