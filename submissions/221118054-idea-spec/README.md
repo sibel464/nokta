@@ -35,10 +35,8 @@ Ham fikri (text) alır → AI ile 5 engineering sorusu sorar (problem, user, sco
 
 > ⚠️ Uygulamayı çalıştırdıktan sonra `expo start` çıktısındaki QR kodu buraya ekle:
 
-```
-## Expo QR Kodu
 ![Expo QR](./Screenshot_1.png)
-```
+
 
 ---
 
