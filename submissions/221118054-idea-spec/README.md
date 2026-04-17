@@ -36,7 +36,7 @@ Ham fikri (text) alır → AI ile 5 engineering sorusu sorar (problem, user, sco
 > ⚠️ Uygulamayı çalıştırdıktan sonra `expo start` çıktısındaki QR kodu buraya ekle:
 
 ```
-Expo Go QR: [[expo start çalıştırınca çıkan QR kodunun linkini buraya yaz](https://expo.dev/accounts/cosefseha/projects/app/builds/e1b24aed-ed5d-48df-87bc-bf017463296e)]
+Expo Go QR: [(https://expo.dev/accounts/cosefseha/projects/app/builds/e1b24aed-ed5d-48df-87bc-bf017463296e)]
 ```
 
 ---
