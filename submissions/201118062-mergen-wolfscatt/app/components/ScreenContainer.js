@@ -14,7 +14,8 @@ export default function ScreenContainer({
   scroll = false,
   centered = false,
   contentContainerStyle,
-  style
+  style,
+  keyboardOffset = 0
 }) {
   const body = scroll ? (
     <ScrollView
@@ -43,6 +44,7 @@ export default function ScreenContainer({
       <KeyboardAvoidingView
         style={styles.keyboard}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={keyboardOffset}
       >
         {body}
       </KeyboardAvoidingView>

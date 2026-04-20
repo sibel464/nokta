@@ -12,10 +12,16 @@ export default function TextAreaField({
   minHeight = 120
 }) {
   const [isFocused, setIsFocused] = useState(false);
+  const hasValue = Boolean(value && value.trim().length > 0);
 
   return (
-    <View>
-      {label ? <Text style={styles.label}>{label}</Text> : null}
+    <View style={styles.wrapper}>
+      {label ? (
+        <View style={styles.labelRow}>
+          <Text style={styles.label}>{label}</Text>
+          <Text style={styles.meta}>{hasValue ? "Yanıt eklendi" : "Boş"}</Text>
+        </View>
+      ) : null}
 
       <TextInput
         multiline
@@ -35,23 +41,40 @@ export default function TextAreaField({
       />
 
       {error ? (
-        <Text style={styles.errorText}>{error}</Text>
+        <View style={styles.feedbackError}>
+          <View style={styles.feedbackDotError} />
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
       ) : hint ? (
-        <Text style={styles.hintText}>{hint}</Text>
+        <View style={styles.feedbackHint}>
+          <View style={styles.feedbackDotHint} />
+          <Text style={styles.hintText}>{hint}</Text>
+        </View>
       ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    gap: spacing.xs
+  },
+  labelRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
   label: {
     ...typography.label,
-    color: colors.text,
-    marginBottom: spacing.xs
+    color: colors.text
+  },
+  meta: {
+    ...typography.caption,
+    color: colors.textSoft
   },
   input: {
     backgroundColor: colors.surfaceMuted,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.border,
     paddingHorizontal: spacing.md,
@@ -61,21 +84,52 @@ const styles = StyleSheet.create({
   },
   inputFocused: {
     borderColor: colors.primary,
-    backgroundColor: colors.surface
+    backgroundColor: colors.surface,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 1
   },
   inputError: {
     borderColor: colors.danger,
     backgroundColor: colors.dangerSoft
   },
+  feedbackError: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs,
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.xxs
+  },
+  feedbackHint: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs,
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.xxs
+  },
+  feedbackDotError: {
+    width: 8,
+    height: 8,
+    borderRadius: radius.pill,
+    backgroundColor: colors.danger
+  },
+  feedbackDotHint: {
+    width: 8,
+    height: 8,
+    borderRadius: radius.pill,
+    backgroundColor: colors.accent
+  },
   errorText: {
-    marginTop: spacing.xs,
+    flex: 1,
     ...typography.caption,
     color: colors.danger
   },
   hintText: {
-    marginTop: spacing.xs,
+    flex: 1,
     ...typography.caption,
-    color: colors.textSoft,
+    color: colors.textMuted,
     fontWeight: "600"
   }
 });
