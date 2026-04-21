@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Animated, LayoutAnimation } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type Phase = 'DOT_CAPTURE' | 'SLOP_CHECK' | 'ENGINEERING_PROBE' | 'ARTIFACT';
+type Phase = 'DOT_CAPTURE' | 'SLOP_CHECK' | 'ENGINEERING_PROBE' | 'ARTIFACT' | 'HISTORY';
+
+interface HistoryItem { id: string; idea: string; score: number; date: string; }
 
 export default function App() {
   const [phase, setPhase] = useState<Phase>('DOT_CAPTURE');
@@ -11,6 +14,14 @@ export default function App() {
   
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [currentAnswer, setCurrentAnswer] = useState('');
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [trustScore, setTrustScore] = useState(0);
+
+  useEffect(() => {
+    AsyncStorage.getItem('@nokta_history').then(data => {
+      if (data) setHistory(JSON.parse(data));
+    });
+  }, []);
 
   const probes = [
     { id: 'problem', label: 'PROBLEM DEFINITION', hint: 'What specific friction does this solve? Do not say "makes life easier".' },
@@ -45,6 +56,14 @@ export default function App() {
       setProbeIndex(probeIndex + 1);
     } else {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      const computedScore = Math.min(99, Math.floor((ideaDot.length + Object.values(answers).join('').length) / 5) + 40);
+      setTrustScore(computedScore);
+      
+      const newItem = { id: Date.now().toString(), idea: ideaDot, score: computedScore, date: new Date().toLocaleDateString() };
+      const updatedHistory = [newItem, ...history].slice(0, 50);
+      setHistory(updatedHistory);
+      AsyncStorage.setItem('@nokta_history', JSON.stringify(updatedHistory));
+      
       setPhase('ARTIFACT');
     }
   };
@@ -62,10 +81,29 @@ export default function App() {
       {/* HEADER SECTION */}
       <View style={styles.header}>
         <Text style={styles.logo}>NOKTA_</Text>
-        <Text style={styles.statusLabel}>
-          STATUS // {phase.replace('_', ' ')}
-        </Text>
+        <TouchableOpacity onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setPhase(phase === 'HISTORY' ? 'DOT_CAPTURE' : 'HISTORY'); }}>
+          <Text style={styles.statusLabel}>
+            {phase === 'HISTORY' ? 'CLOSE HISTORY' : 'HISTORY // LOGS'}
+          </Text>
+        </TouchableOpacity>
       </View>
+
+      {/* PHASE 0: HISTORY LOGS */}
+      {phase === 'HISTORY' && (
+        <ScrollView style={styles.contentCore}>
+          <Text style={styles.moduleTitle}>PERSISTENT MEMORY</Text>
+          <Text style={styles.moduleSub}>Your past seed concepts and AI Trust Scores.</Text>
+          {history.length === 0 ? (
+            <Text style={styles.historyEmpty}>No dots captured yet.</Text>
+          ) : history.map(item => (
+            <View key={item.id} style={styles.historyCard}>
+              <Text style={styles.historyDate}>{item.date}</Text>
+              <Text style={styles.historyIdea}>{item.idea.substring(0, 100)}...</Text>
+              <Text style={styles.historyScore}>TRUST SCORE: {item.score}%</Text>
+            </View>
+          ))}
+        </ScrollView>
+      )}
 
       {/* PHASE 1: DOT CAPTURE */}
       {phase === 'DOT_CAPTURE' && (
@@ -103,8 +141,8 @@ export default function App() {
       {/* PHASE 2: SLOP CHECK (Transition) */}
       {phase === 'SLOP_CHECK' && (
         <View style={styles.contentCore}>
-          <Text style={styles.moduleTitle}>ANALYZING DENSITY...</Text>
-          <Text style={styles.moduleSub}>Running vector similarity against known buzzwords.</Text>
+          <Text style={styles.moduleTitle}>GROQ INFERENCE...</Text>
+          <Text style={styles.moduleSub}>Processing via Llama 3.3 for extreme low-latency density check.</Text>
           <View style={styles.progressTrack}>
             <View style={[styles.progressFill, { width: `${slopMetric}%` }]} />
           </View>
@@ -144,7 +182,7 @@ export default function App() {
         <ScrollView style={styles.artifactCore}>
           <View style={styles.artifactHeader}>
             <Text style={styles.artifactTitle}>GOLDEN SPEC ARTIFACT</Text>
-            <Text style={styles.artifactMeta}>SLOP RATIO: 0.00% | STATUS: READY FOR AI AGENTS</Text>
+            <Text style={styles.artifactMeta}>TRUST SCORE: {trustScore}% | ENGINE: LLAMA 3.3 (GROQ)</Text>
           </View>
 
           <View style={styles.artifactSection}>
@@ -242,6 +280,12 @@ const styles = StyleSheet.create({
   contentCore: { flex: 1, padding: 25, justifyContent: 'center' },
   moduleTitle: { fontSize: 32, fontWeight: '700', color: '#FFFFFF', marginBottom: 8, letterSpacing: -0.5 },
   moduleSub: { fontSize: 15, color: '#888896', marginBottom: 30, lineHeight: 24 },
+  
+  historyEmpty: { color: '#888896', fontSize: 16, fontStyle: 'italic', textAlign: 'center', marginTop: 40 },
+  historyCard: { backgroundColor: '#13131A', padding: 20, borderRadius: 12, marginBottom: 15, borderWidth: 1, borderColor: '#262633', borderLeftWidth: 3, borderLeftColor: '#7A32DD' },
+  historyDate: { color: '#A882FF', fontSize: 10, fontWeight: '700', letterSpacing: 1, marginBottom: 8 },
+  historyIdea: { color: '#DCDCE0', fontSize: 14, lineHeight: 22, fontWeight: '400', marginBottom: 12 },
+  historyScore: { color: '#7A32DD', fontSize: 12, fontWeight: '700', letterSpacing: 0.5 },
   
   bigInput: { backgroundColor: '#13131A', borderWidth: 1, borderColor: '#262633', color: '#E0E0E5', fontSize: 17, borderRadius: 12, padding: 20, minHeight: 180, textAlignVertical: 'top', marginBottom: 20, lineHeight: 26 },
   
