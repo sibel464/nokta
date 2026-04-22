@@ -19,5 +19,5 @@ Nokta Slop Radar, girişim fikirlerini ve pitch paragraflarını analiz ederek "
 
 ## 🔗 Linkler
 - **Expo QR:** [Sistemden npx expo start ile alınabilir]
-- **Demo Video:** [Kaydediliyor...]
-- **APK:** `app-release.apk` (Lütfen `npx eas build -p android --profile preview` komutuyla oluşturun)
+- **Demo Video:** [https://youtu.be/RZIEzTdrAdI](https://youtu.be/RZIEzTdrAdI)
+- **APK:** `app-release.apk`
