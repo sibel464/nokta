@@ -1,67 +1,86 @@
-# Raw Idea
+# Nokta
 
-A mobile application that acts as an intelligent voice memo pad for entrepreneurs and product managers. The user simply speaks their raw, unstructured idea into the app. The system then automatically transcribes the audio, extracts the core problem they are trying to solve, identifies the target audience, and generates a structured, one-page business pitch or product specification.
+*Dağınık fikirleri (noktaları) slopsuz, halüsinasyonsuz ve mühendislik rehberliğinde yönetilen otonom ve kolektif bir yapıya (artifact) dönüştüren yapay zeka destekli mobil kuluçka ve fikir pazar yeri ekosistemi.*
 
-# Engineering Questions
+> Bu belge IDEA standardını takip etmektedir. Hiçbir kod yazılmadan önce Nokta uygulamasının ne olduğunu, neden var olması gerektiğini açıklar. Bu belge `10-draft-ideas/noslop-mobile.md` felsefesine sıkı sıkıya bağlıdır.
 
-* Problem → What exact problem is being solved?
-* User → Who is the target user?
-* Scope → What is included and NOT included?
-* Constraints → Technical or business limitations?
-* Value → Why is this better than existing solutions?
+---
 
-# Answers
+## 1. Tez (Thesis)
 
-* Problem: Founders often have sudden flashes of inspiration but struggle to articulate them in a structured way that developers or investors can understand. Standard note apps just capture disorganized brain dumps.
-* User: Early-stage startup founders, indie hackers, and product managers who need to quickly document and validate ideas while on the go.
-* Scope: Included: Voice transcription, AI-driven structuring (problem, solution, user, features), and simple PDF/Markdown export. Excluded: Automated market research, financial modeling, UI/UX design generation.
-* Constraints: High reliance on third-party LLM APIs (like OpenAI or Anthropic) for accurate transcription and intelligent structuring. This incurs ongoing costs per user action and processing time is not instantaneous.
-* Value: While ChatGPT can do this with the right prompt, this app provides a frictionless, zero-prompting experience. It enforces a specific, optimized product spec format every time without the user needing to learn prompt engineering.
+Yapay zeka (AI) çağında kod yazmak, metin oluşturmak ve render almak giderek ucuzlarken, asıl değerli ve asıl kıt olan kaynak **orijinal bir fikir bulmak ve bu fikri slop-free (yığınsız/çöpsüz) şekilde gerçek bir üretim iskeletine / spesifikasyona dönüştürmektir.** 
 
-# Product Spec
+Harika projelerin, icatların ve akademik çalışmaların tohumları genellikle Notion veya WhatsApp notlarında bir "nokta" büyüklüğünde doğar ve orada boğulurlar. **Nokta; her türden dağınık fikri tek çatı altında toplayan, farklı departmanların ve AI ajanlarının çok boyutlu katkılarıyla onu spesifikasyon seviyesine yükselten, Açık İnovasyon (Open Innovation) kültürünü besleyen ve nihayetinde bu olgun fikirlerin satılabildiği veya gizlilik anlaşmaları (NDA) altında profesyonel QA hizmetleriyle kuluçkalandığı otonom bir ticaret ekosistemidir.**
 
-### Product Name
-Idea Refiner
+---
 
-### Problem Statement
-Founders and creators often lose valuable insights because they lack a quick, structured way to document their raw thoughts before they forget them, leading to disorganized notes and lost momentum.
+## 2. Problem
 
-### Target Users
-Indie hackers, early-stage founders, product managers, and creative professionals.
+Girişimciler, mühendisler, araştırmacılar ve yatırımcılar inovasyonu yönetirken devasa bir sürtünme yaşarlar:
+- **Fikrin Değersizleşmesi Enflasyonu (AI Çağı Problemi):** Temel seviyedeki LLM arayüzleri sayesinde herkes saniyesinde yüzlerce jenerik "uygulama fikri" üretebilir ancak hiçbiri temellendirilmemiş, sığ fikirlerdir. *Gerçekten sınırları çizilmiş ve ayağı yere basan* spesifikasyonların değeri devasa şekilde paha biçilmez konumdadır.
+- **Fırsatların Sosyal Okyanusta Kaybolması:** Reddit veya Twitter gibi devasa interaktif ağlarda milyonlarca niş kullanıcı problemi ve "çılgınca çözüm önerileri" uçuşur. Şirketler veya girişimciler bunları yakalayıp kendi kurumsal bağlamlarına özelleştirerek ticari ürünlere veya yeni iş kollarına çevirmekte genelde pasif ve geç kalırlar.
+- **Rakip Analizinden Mahrumiyet:** Şirketler inovasyon yapmaya çalışırken rakipleriyle arasındaki pazar boşluklarından "fikir türetmek" (reactive seed generation) konusunda analitik altyapı eksikliği çekerler.
+- **Yatırımcı ve Değerlendirici (Deal Flow) Yorgunluğu:** Melek yatırımcı ağları ve fonlar (VC), abartılmış, ayağı yere basmayan, pazar doğrulaması (due-diligence) manuel olarak aylar sürecek binlerce süslü sunum dosyası (pitch-deck) arasında boğulmaktan dolayı asıl fırsatları gözden kaçırırlar.
 
-### Solution Overview
-A voice-first mobile app that captures raw idea descriptions and uses specialized AI prompts to instantly format them into a clean, standardized one-page product specification.
+Nokta, hem içten (migrasyonla), hem dıştan (sosyal medya analizleriyle) fikir toplayan ve bunu profesyonel bir şirket veya "melek yatırımcının" masasında sunan nihai ortamdır.
 
-### Core Features
-* One-Tap Capture: Quick voice recording with automatic, high-accuracy transcription.
-* AI Structuring: Intelligent extraction of the core problem, target audience, proposed solution, and key features.
-* Standardized Output: Automatic formatting into a recognizable Product Requirements Document (PRD) template.
-* Frictionless Export: One-click export to Markdown, PDF, or Notion.
+---
 
-### User Flow
-1. User opens the app and immediately taps the primary "Record" button.
-2. User speaks their unstructured idea for up to 3 minutes.
-3. App transcribes the audio and displays a loading state while processing.
-4. App presents the finalized, drafted 1-page spec.
-5. User reviews the spec, makes minor text edits if necessary, and taps "Export".
+## 3. Nasıl Çalışır (How It Works)
 
-### Tech Stack Suggestion
-* Frontend: React Native (Expo) for rapid cross-platform mobile development.
-* Backend: Node.js/Express for a lightweight API proxy.
-* AI/APIs: OpenAI Whisper API for transcription, OpenAI GPT-4o-mini for fast, cost-effective structuring.
+### Temel İçgörü 1 — Noktayı (Dot) Bütüne Çeviren Engineering-Guided Akış
+Nokta, açık uçlu sohbetlere ve ucuz jenerasyon mantığına ("slop") asla izin vermez. Ham fikri olgun bir anayasaya (spesifikasyon, patent argümanı, mimari tasarım vb.) evrimleştirmek için adım adım "engineering-guided" alan, kısıtlayıcı/yönlendirici mimari metrikler sunar. 
 
-### Constraints & Risks
-* API costs scaling directly with user activity.
-* Potential transcription inaccuracies in noisy environments leading to poor spec generation.
+### Temel İçgörü 2 — Dağınık Bellekten (Migrasyon) Tek Çatıya
+WhatsApp logları, karalanmış e-posta taslakları veya Evernote kayıtları Nokta'nın içine absorbe edilir. Ajanlar eski verileri analiz edip, de-duplike edip zenginleştirmeler (migrasyon) katarak yeni fikir kuluçkasına pürüzsüz giriş yapar.
 
-### Success Metrics
-* Average number of ideas recorded per active user per week.
-* Export conversion rate (percentage of recorded ideas that are successfully exported to PDF/Notion).
+### Temel İçgörü 3 — Backend-Driven UI / A2UI (Adaptif Arayüz)
+Nokta uygulaması o anki iş tanımına göre sunucudan veya AI üzerinden (A2UI) aldığı emirle şekillenir. Tartışılan fikir bir Tarım AR-GE araştırması ise arayüz moleküler taslaklara göre hizalanır. Marketten sistem güncellemeleri yapmaksızın, uygulamanın kendisi sürekli adapte olarak şekil değiştirir.
 
-# Evaluation
+### Temel İçgörü 4 — Açık İnovasyon (Open Innovation) ve Sosyal Sensörler
+Nokta yalnızca sizin aklınıza gelen pasif fikirleri beklemez. Kendi arama (RAG) sınırlarıyla dış dünyadan "tohum (seed point)" toplar:
+- **Sosyal Mecra Adaptasyonu:** Reddit, Twitter veya StackOverflow'daki viral bir şikayet argümanı/çılgın tezi izler ve bu şikayeti doğrudan markanızın bağlamına (context) "yeni bir iş kolu" olarak çevirerek ajandanıza düşürür. 
+- **Rakip Analizinden Fikir Ateşlemesi:** Ajanlar, kullanıcısının hedef rakiplerini rutin taramadan geçirerek, rakibin zayıf karnından tamamen markaya özel yepyeni inovasyon kıvılcımları üretip "kuluçka matrisine" ilk taşı kendi koyar.
 
-* Feasibility: High
-* Innovation Level: Medium
-* Slop Score: 15
-* Justification: The technical requirements rely on standard, well-documented API integrations (Whisper + LLMs), making it highly feasible to build quickly. While it is not a deep-tech breakthrough, it provides immediate, tangible workflow value to a specific target audience without overpromising.
-* One critical improvement suggestion: Allow users to connect the app to their GitHub or Jira boards to automatically convert the generated spec into an initial backlog of project tickets.
+### Temel İçgörü 5 — Kolektif Kuluçka: Ecosystem-Driven Ideation
+Nokta'nın radikal çözümü fikirleri yalnızlık zindanından çıkarıp "Açık İnovasyon/Kurumsal Ekosistem" döngüsüne aktarmasıdır:
+- Gelen ham tasarım izinler dahilinde departmanların (Pazarlama, Sistem DB vb) testine düşer (cross-pollination).
+- Zayıf tez, departman ve ajan zekasının eşzamanlı katılımıyla devasa bir kalite duvarına ulaşır.
+
+### Temel İçgörü 6 — Marketplace ve Güvenli Tasdik Ağı (Monetizasyon & QA)
+- **Premium QA Hizmeti:** Nokta platformundaki onaylı profesyonellerden (kıdemli danışmanlar) veya premium ajanlardan **Dijital Gizlilik Sözleşmesi (NDA)** gölgesinde ücretli fikir QA/Red-Teaming hizmeti alınabilir.
+- **Fikir Pazar Yeri (Idea Marketplace):** Bir girişimi sıfırdan yapmak istemiyorsanız, olgunlaştırılmış o teyitli mimarinizi (tradeable artifact) pazar yerine koyabilirsiniz.
+
+### Temel İçgörü 7 — Yatırımcılar İçin Otonom "Due Diligence" (Değerlendirici Radarı)
+Nokta, sadece "fikir üretenler" için değil; değerlendiriciler ve **melek yatırımcılar (Angel Investors/VCs)** için de yıkıcı (disruptive) bir güçtür. Yatırımcılar her gün içi boş "slop" sunumlar (pitch-deck) okumak zorunda kalmazlar:
+- **Otomatize Risk Analizi:** Masaya gelen bir ürünü Nokta'nın ajanlarına sokarak pazar iddialarının, rakip istatistiklerinin gerçekliğini (due diligence) saniyeler içinde filtreletir ve test edebilirler.
+- **Standartlaştırılmış Güven Filtresi:** Çoğu fon, Nokta skorlamasından (engineering-guided süreçlerinden) geçmemiş, ajan tabanlı rasyonel pazar testinden onay alamamış (slop) projelere randevu bile vermeyerek, Nokta'yı tarafsız ve analitik bir **Yatırım Ön Filtresi (Fikir Hakemi)** olarak konumlandırır.
+
+---
+
+## 4. Ne Yapmaz (What It Does Not Do)
+
+- **Sadece İçeriden (Inbound) Beslenmez:** Siz elle fikir girmediniz diye boş durmaz. Sosyal medya devinimlerinden veya rakip boşluklarından daima fırsatlar üretir.
+- **Fikirlerinizi Manipüle/İstismar Etmez:** Açık İnovasyona ve Pazar yerine sokmadığınız özel laboratuvar fikirleriniz sömürülmeden kapalı devre tutulur.
+- **Açık Uçlu Chatbot Değildir:** Hedefi ucuz metin üretmek değil; %0 halüsinasyon yapısına oturtulmuş gerçek mimariler (artifacts) kurgulamaktır. 
+
+---
+
+## 5. Neden Şimdi (Why Now)
+- **Fikrin Kral (King) Olduğu Çağ:** Kod üretmek, arayüz çizmek her gün bedavaya yakınsarken; sınırları QA edilerek doğrulanmış Fikir, en lüks meta olmuştur.
+- **Açık İnovasyonun Altın Çağı:** Güvenli akıllı sözleşmeler (Smart NDA) sayesinde insanların fikirlerini çalınma korkusu duymadan harika ürünlere bağlama imkanının pürüzsüzleşmesi.
+- **"Süper Solo-Girişimci" (Solo-Entrepreneur) Yükselişi:** Haftalar süren pazar analizi ve R&D süreçleri ajanlarla saniyelere inmiştir. Nokta, sermayesiz tek bir bireyi adeta dev bir Ar-Ge departmanına (multiplier etkisiyle) dönüştürür.
+
+---
+
+## 6. Kim Fayda Sağlar (Who Benefits)
+- **Melek Yatırımcılar, VCs ve Fikir Değerlendiricileri (Filtrasyon):** Kendilerine sunulan binlerce süslü fikrin (slop pitch-deck) iddialarını test edip (due-diligence), yüksek skorlardan geçmiş ve "gerçekten ayağı yere basan" (yatırıma hazır) projelere, risk matrisi minimal seviyedeyken fon/sermaye ayırmak isteyen profesyoneller.
+- **Süper Solo-Girişimciler (Indie Hackers) ve Yaratıcı Zihinler:** Ekip yönetmeden vizyoner üretim kapasitesinde **çılgınca bir artış** yakalayarak, tek başına onlarca otonom asistan eşliğinde projeyi Marketplace üzerinden satan bireyler.
+- **Kurumsal İstihbarat ve Enterprise-wiki Mimarları (Cerebra):** Kurum içinde `10-draft-ideas` türevi bilgi havuzlarını, ajanların ve ekiplerin desteğiyle slop-free standartlara bağlayan yöneticiler.
+- **Rekabet Analistleri / Strateji Danışmanları:** Pazar payı çalmak için rakiplerinin sızıntı/eksikliklerinden otonom iş fırsatları veya mentorluk bütçesi (NDA korumalı QA) çıkarmak isteyenler.
+
+---
+
+## 7. Özet (Summary)
+Nokta; saf fikri (ideation) yalnızlık zincirlerinden çıkaran, test eden, fonlayan (yatırım alan) ve onu satılabilir bir varlığa dönüştüren adaptif kuluçka ortamıdır. 
+Sadece kullanıcı hayallerini içeri aktarmakla kalmaz; otonom internet ajanlarıyla Reddit trendlerini tarar, saniyeler içinde "due-diligence" (yatırım değerlendirme pazar araştırması) sunarak riskleri eler. Taslak, profesyonel danışmanlara NDA şemsiyesi ile açılarak zenginleştirilir. Günün sonunda bir 'fikir kırıntısı' (nokta); solo girişimcinin elinde piyasayı sallayacak bir ürüne, şirketlerin Enterprise-wiki platformunda hatasız bir pazar spekine, veya zeki bir melek yatırımcının "slop projelerden kurtulup anında fonlamayı seçtiği" analitik bir başyapıta dönüşür.
